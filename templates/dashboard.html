@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card text-white bg-danger text-center p-3 shadow">
+            <h3>{{ open_count }}</h3>
+            <p class="mb-0">Open Tickets</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-warning text-center p-3 shadow">
+            <h3>{{ inprogress_count }}</h3>
+            <p class="mb-0">In Progress</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-white bg-success text-center p-3 shadow">
+            <h3>{{ resolved_count }}</h3>
+            <p class="mb-0">Resolved Tickets</p>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow mb-4">
+    <div class="card-header bg-dark text-white">
+        <h5>Ticket Status Chart</h5>
+    </div>
+    <div class="card-body">
+        <canvas id="statusChart" height="100"></canvas>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Open', 'In Progress', 'Resolved'],
+            datasets: [{
+                label: 'Number of Tickets',
+                data: [{{ open_count }}, {{ inprogress_count }}, {{ resolved_count }}],
+                backgroundColor: ['#e74c3c', '#f39c12', '#27ae60'],
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+</script>
+{% endblock %}
